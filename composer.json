@@ -20,11 +20,6 @@
             "Illuminate\\Pagination\\": ""
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "8.x-dev"
-        }
-    },
     "config": {
         "sort-packages": true
     },
