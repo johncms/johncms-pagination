@@ -304,16 +304,6 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
-     * Получем коллекцию
-     *
-     * @return Collection
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    /**
      * Get the number of the first item in the slice.
      *
      * @return int

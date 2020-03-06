@@ -198,4 +198,14 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
     {
         return json_encode($this->jsonSerialize(), $options);
     }
+
+    /**
+     * Получем коллекцию
+     *
+     * @return Collection
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
 }
