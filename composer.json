@@ -1,12 +1,8 @@
 {
-    "name": "illuminate/pagination",
-    "description": "The Illuminate Pagination package.",
+    "name": "simba77/johncms-pagination",
+    "description": "The JohnCMS Pagination package.",
     "license": "MIT",
-    "homepage": "https://laravel.com",
-    "support": {
-        "issues": "https://github.com/laravel/framework/issues",
-        "source": "https://github.com/laravel/framework"
-    },
+    "homepage": "https://johncms.com",
     "authors": [
         {
             "name": "Taylor Otwell",
