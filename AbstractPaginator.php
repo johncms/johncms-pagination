@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Johncms\System\Http\Request;
 
 /**
  * @mixin \Illuminate\Support\Collection
@@ -80,20 +81,6 @@ abstract class AbstractPaginator implements Htmlable
     protected $options;
 
     /**
-     * The current path resolver callback.
-     *
-     * @var \Closure
-     */
-    protected static $currentPathResolver;
-
-    /**
-     * The current page resolver callback.
-     *
-     * @var \Closure
-     */
-    protected static $currentPageResolver;
-
-    /**
      * The query string resolver callback.
      *
      * @var \Closure
@@ -106,20 +93,6 @@ abstract class AbstractPaginator implements Htmlable
      * @var \Closure
      */
     protected static $viewFactoryResolver;
-
-    /**
-     * The default pagination view.
-     *
-     * @var string
-     */
-    public static $defaultView = 'pagination::bootstrap-4';
-
-    /**
-     * The default "simple" pagination view.
-     *
-     * @var string
-     */
-    public static $defaultSimpleView = 'pagination::simple-bootstrap-4';
 
     /**
      * Determine if the given value is a valid page number.
@@ -441,22 +414,9 @@ abstract class AbstractPaginator implements Htmlable
      */
     public static function resolveCurrentPath($default = '/')
     {
-        if (isset(static::$currentPathResolver)) {
-            return call_user_func(static::$currentPathResolver);
-        }
-
-        return $default;
-    }
-
-    /**
-     * Set the current request path resolver callback.
-     *
-     * @param \Closure $resolver
-     * @return void
-     */
-    public static function currentPathResolver(Closure $resolver)
-    {
-        static::$currentPathResolver = $resolver;
+        /** @var Request $uri */
+        $uri = di(Request::class);
+        return $uri->getQueryString(['page']);
     }
 
     /**
@@ -468,22 +428,9 @@ abstract class AbstractPaginator implements Htmlable
      */
     public static function resolveCurrentPage($pageName = 'page', $default = 1)
     {
-        if (isset(static::$currentPageResolver)) {
-            return call_user_func(static::$currentPageResolver, $pageName);
-        }
-
-        return $default;
-    }
-
-    /**
-     * Set the current page resolver callback.
-     *
-     * @param \Closure $resolver
-     * @return void
-     */
-    public static function currentPageResolver(Closure $resolver)
-    {
-        static::$currentPageResolver = $resolver;
+        /** @var Request $uri */
+        $uri = di(Request::class);
+        return $uri->getQuery($pageName, $default, FILTER_VALIDATE_INT);
     }
 
     /**
@@ -676,7 +623,7 @@ abstract class AbstractPaginator implements Htmlable
      */
     public function toHtml()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 
     /**
@@ -698,6 +645,6 @@ abstract class AbstractPaginator implements Htmlable
      */
     public function __toString()
     {
-        return (string)$this->render();
+        return (string) $this->render();
     }
 }
