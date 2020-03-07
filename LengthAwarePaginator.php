@@ -63,6 +63,10 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
     protected function setCurrentPage($currentPage, $pageName)
     {
         $currentPage = $currentPage ?: static::resolveCurrentPage($pageName);
+        if ($currentPage > $this->lastPage()) {
+            header('Location: ' . $this->url($this->lastPage()));
+            exit;
+        }
 
         return $this->isValidPageNumber($currentPage) ? (int) $currentPage : 1;
     }
