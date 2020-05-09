@@ -11,7 +11,7 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use Johncms\System\Http\Request;
 
 /**
- * @mixin \Illuminate\Support\Collection
+ * @mixin Collection
  */
 abstract class AbstractPaginator implements Htmlable
 {
@@ -20,7 +20,7 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * All of the items being paginated.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $items;
 
@@ -115,6 +115,7 @@ abstract class AbstractPaginator implements Htmlable
         if ($this->currentPage() > 1) {
             return $this->url($this->currentPage() - 1);
         }
+        return null;
     }
 
     /**
@@ -124,7 +125,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param int $end
      * @return array
      */
-    public function getUrlRange($start, $end)
+    public function getUrlRange($start, $end): array
     {
         return collect(range($start, $end))->mapWithKeys(
             function ($page) {
@@ -168,7 +169,7 @@ abstract class AbstractPaginator implements Htmlable
      */
     public function fragment($fragment = null)
     {
-        if (is_null($fragment)) {
+        if ($fragment === null) {
             return $this->fragment;
         }
 
@@ -186,7 +187,7 @@ abstract class AbstractPaginator implements Htmlable
      */
     public function appends($key, $value = null): self
     {
-        if (is_null($key)) {
+        if ($key === null) {
             return $this;
         }
 
@@ -217,7 +218,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @return $this
      */
-    public function withQueryString()
+    public function withQueryString(): self
     {
         if (isset(static::$queryStringResolver)) {
             return $this->appends(call_user_func(static::$queryStringResolver));
@@ -259,7 +260,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param array $relations
      * @return $this
      */
-    public function loadMorph($relation, $relations)
+    public function loadMorph($relation, $relations): self
     {
         $this->getCollection()->loadMorph($relation, $relations);
 
@@ -271,7 +272,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @return array
      */
-    public function items()
+    public function items(): array
     {
         return $this->items->all();
     }
@@ -427,7 +428,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param int $default
      * @return int
      */
-    public static function resolveCurrentPage($pageName = 'page', $default = 1)
+    public static function resolveCurrentPage($pageName = 'page', $default = 1): int
     {
         /** @var Request $uri */
         $uri = di(Request::class);
@@ -446,65 +447,11 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
-     * Get an instance of the view factory from the resolver.
-     *
-     * @return \Illuminate\Contracts\View\Factory
-     */
-    public static function viewFactory()
-    {
-        return call_user_func(static::$viewFactoryResolver);
-    }
-
-    /**
-     * Set the view factory resolver callback.
-     *
-     * @param \Closure $resolver
-     * @return void
-     */
-    public static function viewFactoryResolver(Closure $resolver)
-    {
-        static::$viewFactoryResolver = $resolver;
-    }
-
-    /**
-     * Set the default pagination view.
-     *
-     * @param string $view
-     * @return void
-     */
-    public static function defaultView($view)
-    {
-        static::$defaultView = $view;
-    }
-
-    /**
-     * Set the default "simple" pagination view.
-     *
-     * @param string $view
-     * @return void
-     */
-    public static function defaultSimpleView($view)
-    {
-        static::$defaultSimpleView = $view;
-    }
-
-    /**
-     * Indicate that Bootstrap 3 styling should be used for generated links.
-     *
-     * @return void
-     */
-    public static function useBootstrapThree()
-    {
-        static::defaultView('pagination::default');
-        static::defaultSimpleView('pagination::simple-default');
-    }
-
-    /**
      * Get an iterator for the items.
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return $this->items->getIterator();
     }
@@ -514,7 +461,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @return bool
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->items->isEmpty();
     }
@@ -524,7 +471,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @return bool
      */
-    public function isNotEmpty()
+    public function isNotEmpty(): bool
     {
         return $this->items->isNotEmpty();
     }
@@ -542,9 +489,9 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Get the paginator's underlying collection.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function getCollection(): \Illuminate\Support\Collection
+    public function getCollection(): Collection
     {
         return $this->items;
     }
@@ -552,7 +499,7 @@ abstract class AbstractPaginator implements Htmlable
     /**
      * Set the paginator's underlying collection.
      *
-     * @param \Illuminate\Support\Collection $collection
+     * @param Collection $collection
      * @return $this
      */
     public function setCollection(Collection $collection)
@@ -567,7 +514,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -578,7 +525,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param mixed $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return $this->items->has($key);
     }
@@ -601,7 +548,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param mixed $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->items->put($key, $value);
     }
@@ -612,7 +559,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param mixed $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->items->forget($key);
     }

@@ -60,7 +60,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param string $pageName
      * @return int
      */
-    protected function setCurrentPage($currentPage, $pageName)
+    protected function setCurrentPage($currentPage, $pageName): int
     {
         $currentPage = $currentPage ?: static::resolveCurrentPage($pageName);
         if ($currentPage > $this->lastPage()) {
@@ -76,9 +76,9 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @param string|null $view
      * @param array $data
-     * @return \Illuminate\Contracts\Support\Htmlable
+     * @return string
      */
-    public function links($view = null, $data = [])
+    public function links($view = null, $data = []): string
     {
         return $this->render($view, $data);
     }
@@ -88,9 +88,9 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @param string|null $view
      * @param array $data
-     * @return \Illuminate\Contracts\Support\Htmlable
+     * @return string
      */
-    public function render($view = null, $data = [])
+    public function render($view = null, $data = []): string
     {
         $view_engine = di(Render::class);
         return $view_engine->render('system::app/model_paginator', ['elements' => $this->elements(), 'paginator' => $this]);
@@ -101,7 +101,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return array
      */
-    protected function elements()
+    protected function elements(): array
     {
         $window = UrlWindow::make($this);
 
@@ -121,7 +121,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return int
      */
-    public function total()
+    public function total(): int
     {
         return $this->total;
     }
@@ -131,7 +131,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return bool
      */
-    public function hasMorePages()
+    public function hasMorePages(): bool
     {
         return $this->currentPage() < $this->lastPage();
     }
@@ -141,11 +141,12 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return string|null
      */
-    public function nextPageUrl()
+    public function nextPageUrl(): ?string
     {
         if ($this->lastPage() > $this->currentPage()) {
             return $this->url($this->currentPage() + 1);
         }
+        return null;
     }
 
     /**
@@ -153,7 +154,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return int
      */
-    public function lastPage()
+    public function lastPage(): int
     {
         return $this->lastPage;
     }
@@ -163,7 +164,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'current_page'   => $this->currentPage(),
@@ -186,7 +187,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -197,17 +198,17 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param int $options
      * @return string
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
         return json_encode($this->jsonSerialize(), $options);
     }
 
     /**
-     * Получем коллекцию
+     * Получаем коллекцию
      *
      * @return Collection
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->items;
     }

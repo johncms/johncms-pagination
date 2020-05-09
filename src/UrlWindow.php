@@ -9,14 +9,14 @@ class UrlWindow
     /**
      * The paginator implementation.
      *
-     * @var \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @var PaginatorContract
      */
     protected $paginator;
 
     /**
      * Create a new URL window instance.
      *
-     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator $paginator
+     * @param PaginatorContract $paginator
      * @return void
      */
     public function __construct(PaginatorContract $paginator)
@@ -27,10 +27,10 @@ class UrlWindow
     /**
      * Create a new URL window instance.
      *
-     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator $paginator
+     * @param PaginatorContract $paginator
      * @return array
      */
-    public static function make(PaginatorContract $paginator)
+    public static function make(PaginatorContract $paginator): array
     {
         return (new static($paginator))->get();
     }
@@ -40,7 +40,7 @@ class UrlWindow
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
         $onEachSide = $this->paginator->onEachSide;
 
@@ -56,7 +56,7 @@ class UrlWindow
      *
      * @return array
      */
-    protected function getSmallSlider()
+    protected function getSmallSlider(): array
     {
         return [
             'first'  => $this->paginator->getUrlRange(1, $this->lastPage()),
@@ -71,7 +71,7 @@ class UrlWindow
      * @param int $onEachSide
      * @return array
      */
-    protected function getUrlSlider($onEachSide)
+    protected function getUrlSlider($onEachSide): array
     {
         $window = $onEachSide * 2;
 
@@ -89,7 +89,7 @@ class UrlWindow
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
-        elseif ($this->currentPage() > ($this->lastPage() - $window - 2)) {
+        if ($this->currentPage() > ($this->lastPage() - $window - 2)) {
             return $this->getSliderTooCloseToEnding($window);
         }
 
@@ -105,7 +105,7 @@ class UrlWindow
      * @param int $window
      * @return array
      */
-    protected function getSliderTooCloseToBeginning($window)
+    protected function getSliderTooCloseToBeginning($window): array
     {
         return [
             'first'  => $this->paginator->getUrlRange(1, $window + 2),
@@ -120,7 +120,7 @@ class UrlWindow
      * @param int $window
      * @return array
      */
-    protected function getSliderTooCloseToEnding($window)
+    protected function getSliderTooCloseToEnding($window): array
     {
         $last = $this->paginator->getUrlRange(
             $this->lastPage() - $window - 2,
@@ -140,7 +140,7 @@ class UrlWindow
      * @param int $onEachSide
      * @return array
      */
-    protected function getFullSlider($onEachSide)
+    protected function getFullSlider($onEachSide): array
     {
         return [
             'first'  => $this->getStart(),
@@ -155,7 +155,7 @@ class UrlWindow
      * @param int $onEachSide
      * @return array
      */
-    public function getAdjacentUrlRange($onEachSide)
+    public function getAdjacentUrlRange($onEachSide): ?array
     {
         if ($this->currentPage() <= 4) {
             return null;
@@ -171,7 +171,7 @@ class UrlWindow
      *
      * @return array
      */
-    public function getStart()
+    public function getStart(): array
     {
         if ($this->currentPage() <= 4) {
             $last = 5;
@@ -187,7 +187,7 @@ class UrlWindow
      *
      * @return array
      */
-    public function getFinish()
+    public function getFinish(): array
     {
         return $this->paginator->getUrlRange(
             $this->lastPage() - 1,
@@ -200,7 +200,7 @@ class UrlWindow
      *
      * @return bool
      */
-    public function hasPages()
+    public function hasPages(): bool
     {
         return $this->paginator->lastPage() > 1;
     }
@@ -210,7 +210,7 @@ class UrlWindow
      *
      * @return int
      */
-    protected function currentPage()
+    protected function currentPage(): int
     {
         return $this->paginator->currentPage();
     }
@@ -220,7 +220,7 @@ class UrlWindow
      *
      * @return int
      */
-    protected function lastPage()
+    protected function lastPage(): int
     {
         return $this->paginator->lastPage();
     }
