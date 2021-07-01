@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
-use Johncms\System\Http\Request;
+use Johncms\Http\Request;
 
 /**
  * @mixin Collection
