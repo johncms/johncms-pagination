@@ -540,7 +540,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param mixed $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->items->get($key);
     }

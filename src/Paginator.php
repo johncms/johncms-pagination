@@ -77,11 +77,12 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return string|null
      */
-    public function nextPageUrl()
+    public function nextPageUrl(): ?string
     {
         if ($this->hasMorePages()) {
             return $this->url($this->currentPage() + 1);
         }
+        return null;
     }
 
     /**
@@ -113,10 +114,10 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
     /**
      * Manually indicate that the paginator does have more pages.
      *
-     * @param  bool  $hasMore
+     * @param bool $hasMore
      * @return $this
      */
-    public function hasMorePagesWhen($hasMore = true)
+    public function hasMorePagesWhen(bool $hasMore = true): static
     {
         $this->hasMore = $hasMore;
 
@@ -128,7 +129,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return bool
      */
-    public function hasMorePages()
+    public function hasMorePages(): bool
     {
         return $this->hasMore;
     }
@@ -138,7 +139,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'current_page' => $this->currentPage(),
@@ -158,7 +159,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -169,7 +170,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      * @param  int  $options
      * @return string
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
         return json_encode($this->jsonSerialize(), $options);
     }
